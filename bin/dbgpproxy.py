@@ -1,7 +1,7 @@
 import sys
-import logging
 
 __author__ = 'gkralik'
+__version__ = '0.1'
 
 
 def _get_dbgpproxy_lib_path():
@@ -33,10 +33,54 @@ finally:
         del sys.path[0]
 
 
-configure_logging()
+log_levels = {
+    'CRITICAL': logging.CRITICAL,
+    'ERROR': logging.ERROR,
+    'WARN': logging.WARN,
+    'INFO': logging.INFO,
+    'DEBUG': logging.DEBUG
+}
+
 
 if __name__ == "__main__":
     logger = logging.getLogger('dbgpproxy')
 
-    logger.info('starting proxy')
-    #Proxy().start()
+    args = parse_arguments()
+
+    # parse IDE host:port
+    if not args.ide.find(':'):
+        sys.stderr.write('Invalid IDE parameter.\n')
+        sys.exit(1)
+
+    idehost, ideport = args.ide.split(':')
+    ideport = int(ideport)
+
+    # parse debug host:port
+    if not args.dbg.find(':'):
+        sys.stderr.write('Invalid debug parameter.\n')
+        sys.exit(1)
+
+    dbghost, dbgport = args.dbg.split(':')
+    dbgport = int(dbgport)
+
+    # parse log level
+    if args.loglevel in log_levels:
+        loglevel = log_levels[args.loglevel]
+    else:
+        sys.stderr.write('Invalid log level.\n')
+        sys.exit(1)
+
+    configure_logging(level=loglevel)
+
+    proxy = Proxy(idehost=idehost, ideport=ideport, dbghost=dbghost, dbgport=dbgport)
+
+    try:
+        proxy.start()
+    except KeyboardInterrupt:
+        print('caught CTRL-C, exiting...')
+        proxy.stop()
+        sys.exit(0)
+    except Exception as e:
+        logger.critical('Exception: %s' % (e))
+        sys.stderr.write('Exception: %s\n' % (e))
+        sys.exit(2)
