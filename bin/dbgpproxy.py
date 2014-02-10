@@ -1,4 +1,5 @@
 import sys
+import logging
 
 __author__ = 'gkralik'
 __version__ = '0.1'
@@ -27,7 +28,8 @@ try:
         from dbgpproxy.dispatcher import *
         from dbgpproxy.proxy import *
     except ImportError:
-        pass
+        sys.stderr.write('failed to import required modules.\n')
+        sys.exit(3)
 finally:
     if _path:
         del sys.path[0]
