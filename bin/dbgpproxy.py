@@ -27,8 +27,8 @@ try:
         from dbgpproxy.common import *
         from dbgpproxy.dispatcher import *
         from dbgpproxy.proxy import *
-    except ImportError:
-        sys.stderr.write('failed to import required modules.\n')
+    except ImportError as e:
+        sys.stderr.write('failed to import required modules: %s.\n' % (e))
         sys.exit(3)
 finally:
     if _path:
