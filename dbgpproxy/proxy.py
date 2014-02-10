@@ -10,7 +10,7 @@ class Proxy:
         self.logger = logging.getLogger('dbgpproxy')
         self._servers = {}
 
-        self._registration_server = RegistrationServer(idehost, ideport, proxy_manager=self)
+        self._registration_server = RegistrationServer(idehost, ideport, dbghost, dbgport, proxy_manager=self)
         self._debugger_connection_server = DebugConnectionServer(dbghost, dbgport, proxy_manager=self)
 
     @staticmethod
