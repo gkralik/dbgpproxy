@@ -109,7 +109,7 @@ class RegistrationHandler(asyncore.dispatcher_with_send):
 
         id = self._proxy_manager.add_server(idekey, self.addr[0], port, multi)
         if id:
-            msg = u'<?xml version="1.0" encoding="UTF-8"?>\n<proxyinit success="1" idekey="{0:s}" address="{1:s}" port="{2:d}"/>'.format(
+            msg = '<?xml version="1.0" encoding="UTF-8"?>\n<proxyinit success="1" idekey="{0:s}" address="{1:s}" port="{2:d}"/>'.format(
                 id, self._dbghost, self._dbgport)
             self.send(msg)
             return
@@ -131,12 +131,12 @@ class RegistrationHandler(asyncore.dispatcher_with_send):
             return
 
         id = self._proxy_manager.remove_server(idekey)
-        msg = u'<?xml version="1.0" encoding="UTF-8"?>\n<proxystop success="1" idekey="{0:s}"/>'.format(id)
+        msg = '<?xml version="1.0" encoding="UTF-8"?>\n<proxystop success="1" idekey="{0:s}"/>'.format(id)
         self.send(msg)
         return
 
     def _error(self, command, message, code=E_NO_ERROR):
-        error = u'<?xml version="1.0" encoding="UTF-8"?>\n<{0:s} success="0"><error id="{1:d}"><message>{2:s}</message></error></{0:s}>'.format(
+        error = '<?xml version="1.0" encoding="UTF-8"?>\n<{0:s} success="0"><error id="{1:d}"><message>{2:s}</message></error></{0:s}>'.format(
             command, code, message)
 
         self.logger.error(message)
@@ -290,7 +290,7 @@ class DebugConnectionHandler(asyncore.dispatcher_with_send):
             init_packet.setAttribute('hostname', self._dbghost)
 
         # send the init packet to the server (IDE)
-        response = u'<?xml version="1.0" encoding="UTF-8"?>\n'
+        response = '<?xml version="1.0" encoding="UTF-8"?>\n'
         response += init_packet.toxml()
         l = len(response)
         self.logger.debug('sending init to IDE {0:d}\0{1:s}\0'.format(l, response))
