@@ -6,6 +6,12 @@ __version__ = '0.5'
 
 
 def _get_dbgpproxy_lib_path():
+    """
+    Try to find the dbgproxy lib path.
+
+    Just checks the parent directory for the dbgproxy package.
+    @return: The path of the parent directory if the dbgpproxy package is there.
+    """
     from os.path import dirname, join, abspath, exists
 
     try:
@@ -22,6 +28,7 @@ def _get_dbgpproxy_lib_path():
 
 _path = (not hasattr(sys, "frozen") and _get_dbgpproxy_lib_path() or None)
 if _path:
+    # insert the path
     sys.path.insert(0, _path)
 try:
     try:
@@ -33,15 +40,9 @@ try:
         sys.exit(3)
 finally:
     if _path:
+        # delete path again.
         del sys.path[0]
 
-log_levels = {
-    'CRITICAL': logging.CRITICAL,
-    'ERROR': logging.ERROR,
-    'WARN': logging.WARN,
-    'INFO': logging.INFO,
-    'DEBUG': logging.DEBUG
-}
 
 if __name__ == "__main__":
     if sys.version_info < (3, 1):
