@@ -375,7 +375,7 @@ class DebugConnectionHandler(asyncore.dispatcher_with_send):
             self.close()
             return
 
-        init_packet.setAttribute('proxied', self._enginehost)
+        init_packet.setAttribute('proxied', self._enginehost[0])
 
         if not self.connect_to_ide(server, init_packet):
             self.logger.warn(
