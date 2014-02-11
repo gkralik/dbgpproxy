@@ -1,12 +1,11 @@
 import getopt
 import logging
-
-__author__ = 'gkralik'
-
+import re
 import asyncore
 import socket
 from xml.dom import minidom
 
+__author__ = 'gkralik'
 
 E_NO_ERROR = 0
 E_PARSE_ERROR = 1
@@ -64,7 +63,7 @@ class RegistrationHandler(asyncore.dispatcher_with_send):
         if not line:
             return None, None, line
 
-        command, args = line.split(' ', maxsplit=1)
+        command, args = re.split(' ', line, maxsplit=1)
 
         return command, args.split(), line
 

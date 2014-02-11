@@ -2,7 +2,7 @@ import sys
 import logging
 
 __author__ = 'gkralik'
-__version__ = '0.1'
+__version__ = '0.5'
 
 
 def _get_dbgpproxy_lib_path():
@@ -19,6 +19,7 @@ def _get_dbgpproxy_lib_path():
     if exists(init_file):
         return parent_dir
 
+
 _path = (not hasattr(sys, "frozen") and _get_dbgpproxy_lib_path() or None)
 if _path:
     sys.path.insert(0, _path)
@@ -34,7 +35,6 @@ finally:
     if _path:
         del sys.path[0]
 
-
 log_levels = {
     'CRITICAL': logging.CRITICAL,
     'ERROR': logging.ERROR,
@@ -43,8 +43,15 @@ log_levels = {
     'DEBUG': logging.DEBUG
 }
 
-
 if __name__ == "__main__":
+    if sys.version_info < (3, 1):
+        exe = sys.executable
+        version = '.'.join(map(str, sys.version_info[:3]))
+        sys.stderr.write(
+            "dbgpproxy must be run with Python version 3.1 or greater. Your current python (%s) is version %s\n" % (
+            exe, version))
+        sys.exit(2)
+
     logger = logging.getLogger('dbgpproxy')
 
     args = parse_arguments()
