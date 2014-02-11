@@ -2,7 +2,7 @@ import sys
 import logging
 
 __author__ = 'gkralik'
-__version__ = '0.5'
+__version__ = '0.6'
 
 
 def _get_dbgpproxy_lib_path():
